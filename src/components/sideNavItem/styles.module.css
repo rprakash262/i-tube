@@ -1,0 +1,36 @@
+.sideNavItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 20px;
+  height: 45px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.activeSideNavItem {
+  background-color: #ffffff1a;
+}
+
+.sideNavItem:hover {
+  background-color: #ffffff1a;
+}
+
+.sideNavItem p {
+  font-size: 16px;
+  font-weight: 600;
+  padding-left: 20px;
+}
+
+#newPlaylistBtn {
+  width: 80%;
+  height: 38px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 20px;
+  border-radius: 19px;
+  border: none;
+  background-color: #ffffff1a;
+  color: #fff;
+  cursor: pointer;
+}

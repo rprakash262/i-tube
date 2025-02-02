@@ -1,6 +1,6 @@
 #header {
   height: 64px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid var(--border);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -16,5 +16,5 @@
 
 #header div:first-child h2 {
   margin-left: 15px;
-  color: #6EACDA;
+  color: var(--primary);
 }
