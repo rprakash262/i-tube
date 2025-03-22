@@ -1,0 +1,19 @@
+.actionButton {
+  display: inline-block;
+  padding: 3px 5px;
+  box-sizing: content-box;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.actionButton:hover {
+  background-color: var(--primary-color);
+}
+
+.actionButtonIcon {
+  color: var(--text-color);
+}
+
+.actionButton:hover .actionButtonIcon {
+  color: #ffffff;
+}

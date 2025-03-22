@@ -1,8 +1,29 @@
 :root {
+  --font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: "Bebas Neue", sans-serif; */
+  --background-color: #ffffff;
+  --text-color: #333;
+  --primary-color: #228be6;
+  --secondary-color: #ffffff;
+  --file-folder-hover: #cbcbcb;
+  --border-color: #80808024;
+  --error-color: red;
+  --success-color: green;
+  --warning-color: orange;
+
+  color-scheme: dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* :root {
   --primary: #6EACDA;
   --secondary: #ffffff;
   --border: #80808057;
-}
+} */
 
 * {
   padding: 0;

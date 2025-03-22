@@ -3,12 +3,21 @@ import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 
 import styles from "./styles.module.css";
 import { NetflixSliderControl } from "./NetflixSliderControl";
+import { setSelectedAudio } from "../../state/main/mainSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../state/store";
 
-const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-const oneItemWidth = 200;
+// const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+const oneItemWidth = 300;
 
-export const NetflixSlider = ({ width }: any) => {
+export const NetflixSlider = ({
+  width,
+  items,
+  sliderTitle,
+  sliderItem: SliderItem,
+}: any) => {
   const [left, setLeft] = useState(0);
+  const dispatch = useDispatch<AppDispatch>();
 
   const goLeft = () => {
     setLeft((prevLeft) => (prevLeft === 0 ? 0 : prevLeft + oneItemWidth));
@@ -18,12 +27,10 @@ export const NetflixSlider = ({ width }: any) => {
     setLeft((prevLeft) => prevLeft - oneItemWidth);
   };
 
-  console.log({ left });
-
   return (
     <div id={styles.netflixSlider} style={{ width: `${width}px` }}>
       <div id={styles.netflixSliderHeader}>
-        <h4>Slider Header</h4>
+        <h4>{sliderTitle}</h4>
         <div id={styles.netflixSliderControls}>
           <NetflixSliderControl icon={IconChevronLeft} onClick={goLeft} />
           <NetflixSliderControl icon={IconChevronRight} onClick={goRight} />
@@ -39,9 +46,12 @@ export const NetflixSlider = ({ width }: any) => {
           transition: "0.3s ease left",
         }}
       >
-        {items.map(() => (
-          <OneNetflixSliderItem>
-            <div>item</div>
+        {items.map((item: any) => (
+          <OneNetflixSliderItem key={item._id}>
+            <SliderItem
+              item={item}
+              onClick={() => dispatch(setSelectedAudio(item))}
+            />
           </OneNetflixSliderItem>
         ))}
       </div>
@@ -50,7 +60,7 @@ export const NetflixSlider = ({ width }: any) => {
 };
 
 const OneNetflixSliderItem = ({ children }: any) => (
-  <div style={{ width: `${oneItemWidth}px`, border: "1px solid white" }}>
+  <div style={{ width: `${oneItemWidth}px`, padding: "0 10px" }}>
     {children}
   </div>
 );

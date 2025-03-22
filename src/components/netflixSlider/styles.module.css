@@ -1,6 +1,7 @@
 #netflixSlider {
   overflow-x: hidden;
   position: relative;
+  /* height: 294px; */
   height: 150px;
 }
 
