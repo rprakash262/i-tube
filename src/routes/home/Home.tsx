@@ -4,6 +4,8 @@ import { NetflixSlider } from "../../components/netflixSlider/NetflixSlider";
 import { SongItemCard } from "../../components/songItemCard/SongItemCard";
 import { useAppLayout } from "../../contexts/AppLayoutContext";
 
+const serverUrl = import.meta.env.VITE_APP_SERVER_URL;
+
 export const Home = () => {
   const { sidebarWidth } = useAppLayout();
   const [items, setItems] = useState<number[]>([]);
@@ -13,7 +15,7 @@ export const Home = () => {
   }, []);
 
   const fetchAudio = async () => {
-    const response = await fetch("http://localhost:8080/audio");
+    const response = await fetch(`${serverUrl}/audio`);
     const jsonResponse = await response.json();
 
     setItems(jsonResponse);

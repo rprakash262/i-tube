@@ -5,8 +5,10 @@ import { UploadBox } from "../uploadBox/UploadBox";
 import { Input } from "../ui/input/Input";
 import { supabaseClient } from "../../supabase/supabaseClient";
 
-const baseUrl =
-  "https://jdnnhpkgrugqtpwfozux.supabase.co/storage/v1/object/public";
+const baseUrl = import.meta.env.VITE_APP_BASE_STORAGE_SUPABASE_URL;
+
+// const baseUrl =
+//   "https://jdnnhpkgrugqtpwfozux.supabase.co/storage/v1/object/public";
 
 export const FileUploader = ({
   placeholder,
@@ -23,7 +25,7 @@ export const FileUploader = ({
   useEffect(() => {
     if (!fileUrl) {
       setFile(null);
-      setUploadState("notStarted")
+      setUploadState("notStarted");
     }
   }, [fileUrl]);
 

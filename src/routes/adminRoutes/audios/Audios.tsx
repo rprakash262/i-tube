@@ -6,6 +6,8 @@ import { InputField } from "../../../components/forms/inputField/InputField";
 import { FileUploadField } from "../../../components/forms/fileUploadField/FileUploadField";
 import { TagsField } from "../../../components/forms/tagsField/TagsField";
 
+const serverUrl = import.meta.env.VITE_APP_SERVER_URL;
+
 export const Audios = () => {
   const [url, setUrl] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -21,7 +23,7 @@ export const Audios = () => {
     const data = { title, singer, description, url, thumbnail, tags };
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8080/audio", {
+      const response = await fetch(`${serverUrl}/audio`, {
         method: "post",
         body: JSON.stringify(data),
         headers: {
