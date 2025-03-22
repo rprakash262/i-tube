@@ -31,7 +31,7 @@ export const FileUploader = ({
     if (file) {
       setUploadState("uploading");
 
-      const { data, error } = await supabaseClient.storage
+      const { data } = await supabaseClient.storage
         .from(bucketName)
         .upload(`${folderName}/${file?.name}`, file, {
           cacheControl: "3600",

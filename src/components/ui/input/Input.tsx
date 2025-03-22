@@ -6,7 +6,7 @@ export const Input = ({
   onKeyUp,
   placeholder,
   autoFocus,
-  state,
+  // state,
   type,
   style,
 }: any) => {

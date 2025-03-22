@@ -32,7 +32,7 @@ export const SelectDropdown = ({
 }: any) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<string>(selected);
-  const [dropdownItems, setDropdownItems] = useState<string[]>(items);
+  const [dropdownItems] = useState<string[]>(items);
 
   useEffect(() => {
     document.addEventListener("keyup", (e) => {
