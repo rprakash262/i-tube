@@ -10,7 +10,9 @@ import {
 } from "@tabler/icons-react";
 import { Text } from "../ui/text/Text";
 
-export const AudioPlayer = ({ audio, title, singer }: any) => {
+const serverUrl = import.meta.env.VITE_APP_SERVER_URL;
+
+export const AudioPlayer = ({ audioId, audio, title, singer, visits }: any) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [totalDuration, setTotalDuration] = useState<number>(0);
   const [volume, setVolume] = useState<number>(50);
@@ -65,6 +67,20 @@ export const AudioPlayer = ({ audio, title, singer }: any) => {
         ref.current.currentTime += 10;
       }
     }
+  };
+
+  const updateVisits = async () => {
+    const response = await fetch(`${serverUrl}/audio/${audioId}`, {
+      method: "patch",
+      body: JSON.stringify({
+        visits: visits + 1,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const jsonResponse = await response.json();
   };
 
   return (

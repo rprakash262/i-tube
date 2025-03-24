@@ -34,22 +34,24 @@ export const TagsField = ({
             onKeyUp={addNewtag}
           />
         </div>
-        <div style={{ padding: "10px" }}>
-          {tags.map((tag: string) => (
-            <span
-              key={tag}
-              style={{
-                display: "inline-block",
-                padding: "5px 10px",
-                boxShadow: "0px 0px 3px #fff",
-                borderRadius: "10px",
-                margin: "5px",
-              }}
-            >
-              <Text text={tag} size="sm" />
-            </span>
-          ))}
-        </div>
+        {tags?.length > 0 && (
+          <div style={{ padding: "10px" }}>
+            {tags.map((tag: string) => (
+              <span
+                key={tag}
+                style={{
+                  display: "inline-block",
+                  padding: "5px 10px",
+                  boxShadow: "0px 0px 3px #fff",
+                  borderRadius: "10px",
+                  margin: "5px",
+                }}
+              >
+                <Text text={tag} size="sm" />
+              </span>
+            ))}
+          </div>
+        )}
       </div>
       {errorMsg && (
         <Text

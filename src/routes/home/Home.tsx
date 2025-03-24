@@ -18,7 +18,7 @@ export const Home = () => {
     const response = await fetch(`${serverUrl}/audio`);
     const jsonResponse = await response.json();
 
-    setItems(jsonResponse);
+    setItems(jsonResponse.data);
   };
 
   return (
@@ -33,7 +33,7 @@ export const Home = () => {
       <NetflixSlider
         width={window.innerWidth - sidebarWidth - 70}
         items={items}
-        sliderTitle="Playlists"
+        sliderTitle="Trending"
         sliderItem={SongItemCard}
       />
       <div style={{ margin: "50px 0" }} />

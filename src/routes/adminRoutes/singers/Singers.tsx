@@ -4,53 +4,34 @@ import { Text } from "../../../components/ui/text/Text";
 import { Button } from "../../../components/ui/button/Button";
 import { InputField } from "../../../components/forms/inputField/InputField";
 import { FileUploadField } from "../../../components/forms/fileUploadField/FileUploadField";
-import { TagsField } from "../../../components/forms/tagsField/TagsField";
 import { SelectField } from "../../../components/forms/selectField/SelectField";
 
 const serverUrl = import.meta.env.VITE_APP_SERVER_URL;
 
-type DropdownItemType = {
+type IndustryType = {
   id: string;
   label: string;
 };
 
-export const Audios = () => {
-  const [url, setUrl] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [singer, setSinger] = useState<DropdownItemType>();
-  const [genre, setGenre] = useState<DropdownItemType>();
+export const Singers = () => {
+  const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [thumbnail, setThumbnail] = useState<string>(
-    "https://jdnnhpkgrugqtpwfozux.supabase.co/storage/v1/object/public/itube/thumbnails/360_F_320567729_aIbFC4DPHx56oEx1ZtqubZx9o3v5Ldfl.jpg"
-  );
-  const [tags, setTags] = useState<string[]>([]);
+  const [thumbnail, setThumbnail] = useState<string>("");
+  const [industry, setIndustry] = useState<IndustryType>({
+    id: "",
+    label: "",
+  });
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [successMsg, setSuccessMsg] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [allSingers, setAllSingers] = useState<DropdownItemType[]>([]);
-  const [allGenres, setAllGenres] = useState<DropdownItemType[]>([]);
+  const [allIndustries, setAllIndustries] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchSingers();
-    fetchGenres();
+    fetchIndustries();
   }, []);
 
-  const fetchSingers = async () => {
-    const response = await fetch(`${serverUrl}/singer`);
-    const jsonResponse = await response.json();
-
-    const data = jsonResponse.data;
-
-    const items = data.map((d: any) => ({
-      id: d.id,
-      label: d.name,
-    }));
-
-    setAllSingers(items);
-  };
-
-  const fetchGenres = async () => {
-    const response = await fetch(`${serverUrl}/genre`);
+  const fetchIndustries = async () => {
+    const response = await fetch(`${serverUrl}/industry`);
     const jsonResponse = await response.json();
 
     const data = jsonResponse.data;
@@ -59,24 +40,21 @@ export const Audios = () => {
       id: d.id,
       label: d.title,
     }));
-
-    setAllGenres(items);
+    setAllIndustries(items);
+    setIndustry(items[0]);
   };
 
   const onSubmit = async () => {
     const data = {
-      title,
-      singer: allSingers.find((ind) => ind.id === singer?.id)?.id,
+      name,
       description,
-      url,
       thumbnail,
-      tags,
-      genre: allGenres.find((gen) => gen.id === genre?.id)?.id,
+      industry: allIndustries.find((ind) => ind.id === industry?.id)?.id,
     };
 
     try {
       setIsLoading(true);
-      const response = await fetch(`${serverUrl}/audio`, {
+      const response = await fetch(`${serverUrl}/singer`, {
         method: "post",
         body: JSON.stringify(data),
         headers: {
@@ -101,16 +79,13 @@ export const Audios = () => {
   };
 
   const resetFields = () => {
-    setTitle("");
-    setSinger({ id: "", label: "" });
-    setGenre({ id: "", label: "" });
+    setName("");
     setDescription("");
-    setUrl("");
     setThumbnail("");
-    setTags([]);
+    setIndustry(
+      allIndustries?.length > 0 ? allIndustries[0] : { id: "", label: "" }
+    );
   };
-
-  console.log({ allGenres });
 
   return (
     <div style={{ padding: "25px 0" }}>
@@ -123,20 +98,10 @@ export const Audios = () => {
         }}
       >
         <Text
-          text="Add a New Song"
+          text="Add a New Singer"
           size="xl"
           style={{ textAlign: "center", marginBottom: "10px" }}
         />
-        <div style={{ marginBottom: "25px" }}>
-          <FileUploadField
-            label="File"
-            placeholder="Enter File Url..."
-            bucketName="itube"
-            folderName="audios"
-            setFileUrl={setUrl}
-            fileUrl={url}
-          />
-        </div>
         <div style={{ marginBottom: "25px" }}>
           <FileUploadField
             label="Thumbnail"
@@ -149,10 +114,10 @@ export const Audios = () => {
         </div>
         <div style={{ marginBottom: "25px" }}>
           <InputField
-            label="Title"
-            placeholder="Enter Audio Title..."
-            value={title}
-            onChange={setTitle}
+            label="Name"
+            placeholder="Enter Singer Name..."
+            value={name}
+            onChange={setName}
           />
         </div>
         <div style={{ marginBottom: "25px" }}>
@@ -163,36 +128,17 @@ export const Audios = () => {
             onChange={setDescription}
           />
         </div>
-        {allSingers?.length > 0 && (
+        {allIndustries?.length > 0 && (
           <div style={{ marginBottom: "25px" }}>
             <SelectField
-              label="Singer"
+              label="Industry"
               placeholder="Select Industry..."
-              items={allSingers}
-              selected={singer}
-              onChange={setSinger}
+              items={allIndustries}
+              selected={industry}
+              onChange={setIndustry}
             />
           </div>
         )}
-        {allGenres?.length > 0 && (
-          <div style={{ marginBottom: "25px" }}>
-            <SelectField
-              label="Genre"
-              placeholder="Select Genre..."
-              items={allGenres}
-              selected={genre}
-              onChange={setGenre}
-            />
-          </div>
-        )}
-        <div style={{ marginBottom: "25px" }}>
-          <TagsField
-            label="Tags"
-            placeholder="Enter Tags..."
-            onEnter={setTags}
-            tags={tags}
-          />
-        </div>
         <div>
           {errorMsg && (
             <div

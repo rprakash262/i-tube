@@ -1,14 +1,28 @@
-import { IconCaretDown, IconCheck } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { IconCaretDown, IconCheck } from "@tabler/icons-react";
 
 import styles from "./style.module.css";
+import { Text } from "../text/Text";
+
+type OneDropdownItemType = {
+  id: string;
+  label: string;
+};
+
+type SelectDropdownProps = {
+  items: OneDropdownItemType[];
+  selected: OneDropdownItemType;
+  onChange: (item: OneDropdownItemType) => void;
+  disabled?: boolean;
+  placeholder?: string;
+};
 
 const OneDropdownItem = ({ item, isSelected, selectItem }: any) => {
   return (
     <div
       className={styles.oneDropdownItem}
       style={{
-        height: "30px",
+        height: "40px",
         padding: "0 5px",
         cursor: "pointer",
         display: "flex",
@@ -18,7 +32,7 @@ const OneDropdownItem = ({ item, isSelected, selectItem }: any) => {
       }}
       onClick={selectItem}
     >
-      <p>{item}</p>
+      <Text text={item} size="md" style={{ fontSize: "13px" }} />
       {isSelected && <IconCheck size={18} />}
     </div>
   );
@@ -29,10 +43,9 @@ export const SelectDropdown = ({
   selected,
   onChange,
   disabled,
-}: any) => {
+  placeholder = "Select item",
+}: SelectDropdownProps) => {
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = useState<string>(selected);
-  const [dropdownItems] = useState<string[]>(items);
 
   useEffect(() => {
     document.addEventListener("keyup", (e) => {
@@ -50,8 +63,7 @@ export const SelectDropdown = ({
     };
   });
 
-  const selectItem = (item: string) => {
-    setSelectedItem(item);
+  const selectItem = (item: OneDropdownItemType) => {
     onChange(item);
     setShowDropdown(false);
   };
@@ -64,35 +76,45 @@ export const SelectDropdown = ({
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          border: "1px solid var(--border-color)",
+          border: "1px solid var(--input-border-color)",
           cursor: disabled ? "no-drop" : "pointer",
           padding: "0 5px",
-          height: "30px",
+          height: "40px",
           borderRadius: "4px",
+          backgroundColor: "var(--input-bg-color)",
         }}
         onClick={disabled ? () => {} : () => setShowDropdown(!showDropdown)}
       >
-        <p>{selectedItem}</p>
+        {selected?.label ? (
+          <Text text={selected?.label} size="md" style={{ fontSize: "13px" }} />
+        ) : (
+          <Text
+            style={{ color: "#747474", fontSize: "13px" }}
+            text={placeholder}
+            size="md"
+          />
+        )}
         <IconCaretDown />
       </div>
       {showDropdown && (
         <div
           style={{
             position: "absolute",
-            top: "35px",
-            backgroundColor: "var(--background-color)",
+            top: "50px",
+            backgroundColor: "var(--input-bg-color)",
             width: "100%",
-            border: "1px solid var(--border-color)",
+            border: "1px solid var(--input-border-color)",
             borderRadius: "4px",
             maxHeight: "140px",
             overflowY: "scroll",
+            zIndex: 1,
           }}
         >
-          {dropdownItems.map((item: string) => (
+          {items.map((item: OneDropdownItemType) => (
             <OneDropdownItem
-              key={item}
-              item={item}
-              isSelected={selectedItem === item}
+              key={item.id}
+              item={item.label}
+              isSelected={selected?.id === item?.id}
               selectItem={() => selectItem(item)}
             />
           ))}

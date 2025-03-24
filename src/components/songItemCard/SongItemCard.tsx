@@ -12,7 +12,7 @@ export const SongItemCard = ({ item, onClick }: any) => {
         height: "70px",
         cursor: "pointer",
         borderRadius: "4px",
-        border: "1px solid var(--border-color)",
+        // border: "1px solid var(--border-color)",
       }}
     >
       <div

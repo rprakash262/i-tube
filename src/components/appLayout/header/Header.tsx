@@ -25,7 +25,7 @@ export const Header = ({ toggleSidebar }: HeaderProps) => {
         />
         <Button
           title="Admin"
-          onClick={() => navigate("/admin/audios")}
+          onClick={() => navigate("/admin/industries")}
           btnType="primary"
           style={{ marginRight: "10px" }}
         />

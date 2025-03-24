@@ -7,6 +7,9 @@ import { Library } from "../routes/library/Library";
 import { adminNavItems, mainNavItems } from "../data/sidebarNavItem";
 import { Audios } from "../routes/adminRoutes/audios/Audios";
 import { Videos } from "../routes/adminRoutes/videos/Videos";
+import { Industries } from "../routes/adminRoutes/industries/Industries";
+import { Singers } from "../routes/adminRoutes/singers/Singers";
+import { Genre } from "../routes/adminRoutes/genre/Genre";
 
 export const Router = () => (
   <BrowserRouter>
@@ -17,6 +20,10 @@ export const Router = () => (
         <Route path="/library" element={<Library />} />
       </Route>
       <Route path="/admin" element={<AppLayout sideNavItems={adminNavItems} />}>
+        <Route index element={<Industries />} />
+        <Route path="/admin/industries" element={<Industries />} />
+        <Route path="/admin/genre" element={<Genre />} />
+        <Route path="/admin/singers" element={<Singers />} />
         <Route path="/admin/audios" element={<Audios />} />
         <Route path="/admin/videos" element={<Videos />} />
       </Route>

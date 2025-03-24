@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./styles.module.css";
 import { SideNavItemType } from "../../../interfaces/sidebarNavItems";
 // import { sideNavItems } from "../../../data/sidebarNavItem";
 import { SideNavItem } from "../../sideNavItem/SideNavItem";
 import { NewPlaylistBtn } from "../../sideNavItem/NewPlaylistBtn";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 export const Sidebar = ({
   sidebarWidth,
@@ -14,8 +14,13 @@ export const Sidebar = ({
   sidebarWidth: number;
   sideNavItems: SideNavItemType[];
 }) => {
-  const [activeItemId, setActiveItemId] = useState<SideNavItemType["id"]>(1);
+  const [activeItemId, setActiveItemId] = useState<SideNavItemType["id"]>();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    setActiveItemId(sideNavItems.find((item) => item.route === pathname)?.id);
+  }, [navigate]);
 
   const changeRoute = (navItem: SideNavItemType) => {
     setActiveItemId(navItem.id);

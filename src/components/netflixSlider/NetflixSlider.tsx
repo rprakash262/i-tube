@@ -47,7 +47,7 @@ export const NetflixSlider = ({
         }}
       >
         {items.map((item: any) => (
-          <OneNetflixSliderItem key={item._id}>
+          <OneNetflixSliderItem key={item.id}>
             <SliderItem
               item={item}
               onClick={() => dispatch(setSelectedAudio(item))}

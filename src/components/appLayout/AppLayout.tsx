@@ -44,9 +44,11 @@ export const AppLayout = ({
           >
             {selectedAudio && !pathname.includes("/admin") && (
               <AudioPlayer
+                audioId={selectedAudio.id}
                 audio={selectedAudio.url}
                 title={selectedAudio.title}
                 singer={selectedAudio.singer}
+                visits={selectedAudio.visits}
               />
             )}
           </div>

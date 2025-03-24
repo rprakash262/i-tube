@@ -1,15 +1,17 @@
 :root {
   --font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   /* font-family: "Bebas Neue", sans-serif; */
-  --background-color: #ffffff;
+  --background-color: #000000;
   --text-color: #333;
   --primary-color: #228be6;
   --secondary-color: #ffffff;
-  --file-folder-hover: #cbcbcb;
+  --hover-color: #ffffff1a;
   --border-color: #80808024;
+  --input-border-color: #8080807d;
   --error-color: red;
   --success-color: green;
   --warning-color: orange;
+  --input-bg-color: #121212;
 
   color-scheme: dark;
 
