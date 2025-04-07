@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { Text } from "../../../components/ui/text/Text";
 import { LinkButton } from "../../../components/ui/button/LinkButton";
 import { SongItemCard } from "../../../components/songItemCard/SongItemCard";
+import { getUniqueArrayItems } from "../../../utils/misc";
 
 const serverUrl = import.meta.env.VITE_APP_SERVER_URL;
 
@@ -20,15 +21,28 @@ export const AllAudios = () => {
 
     const jsonResponse = await response.json();
 
-    // const genreId = jsonResponse.data.genre;
-    // const singerId = jsonResponse.data.singer;
+    const data = jsonResponse.data;
 
-    // const res = await Promise.allSettled([
-    //   fetch(`${serverUrl}/genre/${genreId}`),
-    //   fetch(`${serverUrl}/singer/${singerId}`),
-    // ]);
+    const genreIds: string[] = [];
+    const singerIds: string[] = [];
 
-    // console.log({res})
+    data.forEach((d: any) => {
+      genreIds.push(d.genre);
+      singerIds.push(d.singer);
+    });
+
+    const uniqueGenreIds = getUniqueArrayItems(genreIds);
+    const uniqueSingerIds = getUniqueArrayItems(singerIds);
+
+    const genreId = jsonResponse.data.genre;
+    const singerId = jsonResponse.data.singer;
+
+    const res = await Promise.allSettled([
+      fetch(`${serverUrl}/genre/${genreId}`),
+      fetch(`${serverUrl}/singer/${singerId}`),
+    ]);
+
+    console.log({ res });
     setAllAudios(jsonResponse.data);
   };
 
