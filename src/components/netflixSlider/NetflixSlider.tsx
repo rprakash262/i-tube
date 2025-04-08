@@ -6,8 +6,8 @@ import { NetflixSliderControl } from "./NetflixSliderControl";
 import { setSelectedAudio } from "../../state/main/mainSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../state/store";
+import { AudioType } from "../../interfaces";
 
-// const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 const oneItemWidth = 300;
 
 export const NetflixSlider = ({
@@ -46,10 +46,12 @@ export const NetflixSlider = ({
           transition: "0.3s ease left",
         }}
       >
-        {items.map((item: any) => (
+        {items.map((item: AudioType) => (
           <OneNetflixSliderItem key={item.id}>
             <SliderItem
-              item={item}
+              title={item.title}
+              thumbnail={item.thumbnail}
+              singer={item.singer}
               onClick={() => dispatch(setSelectedAudio(item))}
             />
           </OneNetflixSliderItem>
