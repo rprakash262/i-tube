@@ -5,11 +5,14 @@ import { Text } from "../../../components/ui/text/Text";
 import { LinkButton } from "../../../components/ui/button/LinkButton";
 import { SongItemCard } from "../../../components/songItemCard/SongItemCard";
 import { getUniqueArrayItems } from "../../../utils/misc";
+import { audioActions } from "../../../services/apiActions/audio";
+import { singerActions } from "../../../services/apiActions/singer";
 
 const serverUrl = import.meta.env.VITE_APP_SERVER_URL;
 
 export const AllAudios = () => {
   const [allAudios, setAllAudios] = useState<any[]>([]);
+  const [singers, setSingers] = useState<any>({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,33 +20,26 @@ export const AllAudios = () => {
   }, []);
 
   const fetchAllAudios = async () => {
-    const response = await fetch(`${serverUrl}/audio`);
+    try {
+      const audioData = await audioActions.fetchAllAudios();
 
-    const jsonResponse = await response.json();
+      const singerIds = audioData.map((d: any) => d.singer);
 
-    const data = jsonResponse.data;
+      const uniqueSingerIds = getUniqueArrayItems(singerIds);
 
-    const genreIds: string[] = [];
-    const singerIds: string[] = [];
+      const singerData = await singerActions.fetchSingersByIds(uniqueSingerIds);
 
-    data.forEach((d: any) => {
-      genreIds.push(d.genre);
-      singerIds.push(d.singer);
-    });
+      const singers: any = {};
 
-    const uniqueGenreIds = getUniqueArrayItems(genreIds);
-    const uniqueSingerIds = getUniqueArrayItems(singerIds);
+      singerData.forEach((singer: any) => {
+        singers[singer.id] = singer;
+      });
 
-    const genreId = jsonResponse.data.genre;
-    const singerId = jsonResponse.data.singer;
-
-    const res = await Promise.allSettled([
-      fetch(`${serverUrl}/genre/${genreId}`),
-      fetch(`${serverUrl}/singer/${singerId}`),
-    ]);
-
-    console.log({ res });
-    setAllAudios(jsonResponse.data);
+      setAllAudios(audioData);
+      setSingers(singers);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   const deleteAudio = async (audioId: string) => {
@@ -75,7 +71,9 @@ export const AllAudios = () => {
         {allAudios.map((audio) => (
           <SongItemCard
             key={audio.id}
-            item={audio}
+            title={audio.title}
+            singer={singers[audio.singer].name}
+            thumbnail={audio.thumbnail}
             isAdmin={true}
             onEditClick={() => navigate(`/admin/audios/edit/${audio.id}`)}
             onDeleteClick={() => deleteAudio(audio.id)}

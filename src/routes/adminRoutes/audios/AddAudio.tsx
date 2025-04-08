@@ -10,12 +10,31 @@ import { defaultThumbnail } from "../../../data/misc";
 
 const serverUrl = import.meta.env.VITE_APP_SERVER_URL;
 
+const emptyDropdown = {
+  id: "",
+  label: "",
+};
+
 type DropdownItemType = {
   id: string;
   label: string;
 };
 
+type AddAudioProps = {
+  editMode?: boolean;
+  audioId?: string;
+  urlProp?: string;
+  titleProp?: string;
+  singerProp?: DropdownItemType;
+  genreProp?: DropdownItemType;
+  descriptionProp?: string;
+  thumbnailProp?: string;
+  tagsProp?: string[];
+};
+
 export const AddAudio = ({
+  editMode,
+  audioId,
   urlProp,
   titleProp,
   singerProp,
@@ -23,16 +42,20 @@ export const AddAudio = ({
   descriptionProp,
   thumbnailProp,
   tagsProp,
-}: any) => {
-  const [url, setUrl] = useState<string>(urlProp);
-  const [title, setTitle] = useState<string>(titleProp);
-  const [singer, setSinger] = useState<DropdownItemType>(singerProp);
-  const [genre, setGenre] = useState<DropdownItemType>(genreProp);
-  const [description, setDescription] = useState<string>(descriptionProp);
+}: AddAudioProps) => {
+  const [url, setUrl] = useState<string>(urlProp ?? "");
+  const [title, setTitle] = useState<string>(titleProp ?? "");
+  const [singer, setSinger] = useState<DropdownItemType>(
+    singerProp ?? emptyDropdown
+  );
+  const [genre, setGenre] = useState<DropdownItemType>(
+    genreProp ?? emptyDropdown
+  );
+  const [description, setDescription] = useState<string>(descriptionProp ?? "");
   const [thumbnail, setThumbnail] = useState<string>(
     thumbnailProp ?? defaultThumbnail
   );
-  const [tags, setTags] = useState<string[]>(tagsProp);
+  const [tags, setTags] = useState<string[]>(tagsProp ?? []);
   const [errorMsg, setErrorMsg] = useState<string>("");
   const [successMsg, setSuccessMsg] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -72,7 +95,7 @@ export const AddAudio = ({
     setAllGenres(items);
   };
 
-  const onSubmit = async () => {
+  const onAddSubmit = async () => {
     const data = {
       title,
       singer: allSingers.find((ind) => ind.id === singer?.id)?.id,
@@ -109,17 +132,51 @@ export const AddAudio = ({
     }
   };
 
+  const onEditSubmit = async () => {
+    const data = {
+      title,
+      singer: allSingers.find((ind) => ind.id === singer?.id)?.id,
+      description,
+      url,
+      thumbnail,
+      tags,
+      genre: allGenres.find((gen) => gen.id === genre?.id)?.id,
+    };
+
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${serverUrl}/audio/${audioId}`, {
+        method: "put",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      await response.json();
+      setSuccessMsg("Audio updated successfully");
+      setIsLoading(false);
+      setTimeout(() => {
+        setSuccessMsg("");
+      }, 5000);
+    } catch (error) {
+      setErrorMsg(String(error));
+      setIsLoading(false);
+      setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+    }
+  };
+
   const resetFields = () => {
     setTitle("");
-    setSinger({ id: "", label: "" });
-    setGenre({ id: "", label: "" });
+    setSinger(emptyDropdown);
+    setGenre(emptyDropdown);
     setDescription("");
     setUrl("");
     setThumbnail("");
     setTags([]);
   };
-
-  console.log({ allGenres });
 
   return (
     <div style={{ padding: "25px 0" }}>
@@ -235,19 +292,33 @@ export const AddAudio = ({
             justifyContent: "center",
           }}
         >
-          <Button
-            title={isLoading ? "Please Wait.." : "Submit"}
-            onClick={onSubmit}
-            btnType="primary"
-            style={{ marginRight: "20px" }}
-            disabled={isLoading}
-          />
-          <Button
-            title="Reset Fields"
-            onClick={resetFields}
-            btnType="primary"
-            disabled={isLoading}
-          />
+          {editMode ? (
+            <>
+              <Button
+                title={isLoading ? "Please Wait.." : "Submit"}
+                onClick={onEditSubmit}
+                btnType="primary"
+                style={{ marginRight: "20px" }}
+                disabled={isLoading}
+              />
+            </>
+          ) : (
+            <>
+              <Button
+                title={isLoading ? "Please Wait.." : "Submit"}
+                onClick={onAddSubmit}
+                btnType="primary"
+                style={{ marginRight: "20px" }}
+                disabled={isLoading}
+              />
+              <Button
+                title="Reset Fields"
+                onClick={resetFields}
+                btnType="primary"
+                disabled={isLoading}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

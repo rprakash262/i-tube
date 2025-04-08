@@ -5,7 +5,7 @@ import { Home } from "../routes/home/Home";
 import { Explore } from "../routes/explore/Explore";
 import { Library } from "../routes/library/Library";
 import { adminNavItems, mainNavItems } from "../data/sidebarNavItem";
-import { Audios } from "../routes/adminRoutes/audios/Audios";
+// import { Audios } from "../routes/adminRoutes/audios/Audios";
 import { Videos } from "../routes/adminRoutes/videos/Videos";
 import { Industries } from "../routes/adminRoutes/industries/Industries";
 import { Singers } from "../routes/adminRoutes/singers/Singers";
